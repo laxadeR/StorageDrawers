@@ -4,6 +4,7 @@ import com.jaquadro.minecraft.storagedrawers.api.storage.INetworked;
 import com.jaquadro.minecraft.storagedrawers.config.PlayerConfig;
 import com.jaquadro.minecraft.storagedrawers.security.SecurityManager;
 import com.jaquadro.minecraft.storagedrawers.util.WorldUtils;
+import dev.ryanhcode.sable.companion.SableCompanion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -98,13 +99,15 @@ public abstract class FaceSlotBlock extends HorizontalDirectionalBlock implement
 
     @Override
     public void attack (@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player) {
-        BlockHitResult hit = WorldUtils.rayTraceEyes(level, player, pos);
-        if (hit.getType() != HitResult.Type.BLOCK)
-            return;
-        if (!hit.getBlockPos().equals(pos))
-            return;
+//        if (SableCompanion.INSTANCE.getContaining(level, pos) != null) {
+            BlockHitResult hit = WorldUtils.rayTraceEyes(level, player, pos);
+            if (hit.getType() != HitResult.Type.BLOCK)
+                return;
+            if (!hit.getBlockPos().equals(pos))
+                return;
 
-        leftAction(state, level, pos, player, hit);
+            leftAction(state, level, pos, player, hit);
+//        }
     }
 
     public Optional<InteractionResult> useSlot(InteractContext context) {

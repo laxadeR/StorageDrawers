@@ -9,6 +9,33 @@ plugins {
     id("com.modrinth.minotaur")
 }
 
+repositories {
+    exclusiveContent { // Sable
+        forRepository {
+            maven {
+                url = uri("https://maven.ryanhcode.dev/releases")
+                name = "RyanHCode Maven"
+            }
+        }
+        filter {
+            includeGroup("dev.ryanhcode.sable")
+            includeGroup("dev.ryanhcode.sable-companion")
+        }
+    }
+
+    exclusiveContent { // For aero, can't curse.maven for some reason
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = uri("https://api.modrinth.com/maven")
+            }
+        }
+        filter {
+            includeGroup("maven.modrinth")
+        }
+    }
+}
+
 neoForge {
     version = Versions.neoForge
 //  accessTransformers.add(file('src/main/resources/META-INF/accesstransformer.cfg'))
@@ -31,10 +58,10 @@ neoForge {
 
 dependencies {
     // JEI
-    runtimeOnly("mezz.jei:jei-1.21.1-neoforge:19.14.1.144")
+    //runtimeOnly("mezz.jei:jei-1.21.1-neoforge:19.14.1.144")
     // JADE
-    implementation("curse.maven:jade-324717:5591256")
-    implementation("curse.maven:the-one-probe-245211:6106998")
+    implementation("curse.maven:jade-324717:7545219")
+    implementation("curse.maven:the-one-probe-245211:7292875")
 
     implementation("curse.maven:architectury-api-419699:5786327")
     implementation("curse.maven:ftb-library-forge-404465:6807431")
@@ -43,6 +70,18 @@ dependencies {
     // implementation("curse.maven:configured-457570:5873783")
     // implementation("curse.maven:carry-on-274259:5649344")
     // implementation("curse.maven:epic-fight-mod-405076:6816063")
+
+    runtimeOnly("curse.maven:sable-1312371:8007005")
+    runtimeOnly("maven.modrinth:create-aeronautics:YhZLrAFC")
+    runtimeOnly("curse.maven:create-328085:7963363")
+    runtimeOnly("curse.maven:lithium-360438:7740400")
+
+    val sableCompanionDep = api("dev.ryanhcode.sable-companion:sable-companion-common-1.21.1:[1.6.0,)")
+    jarJar(sableCompanionDep) {
+        (sableCompanionDep as ExternalModuleDependency).version(Action {
+            prefer("1.6.0")
+        })
+    }
 }
 
 tasks.create<TaskPublishCurseForge>("publishCurseForge") {

@@ -6,6 +6,21 @@ plugins {
     id("org.spongepowered.gradle.vanilla") version "0.2.1-SNAPSHOT"
 }
 
+repositories {
+    exclusiveContent { // Sable
+        forRepository {
+            maven {
+                url = uri("https://maven.ryanhcode.dev/releases")
+                name = "RyanHCode Maven"
+            }
+        }
+        filter {
+            includeGroup("dev.ryanhcode.sable")
+            includeGroup("dev.ryanhcode.sable-companion")
+        }
+    }
+}
+
 minecraft {
     version(Versions.minecraft)
     accessWideners(file("src/main/resources/${Properties.modid}.accesswidener"))
@@ -13,6 +28,7 @@ minecraft {
 
 dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
+    api("dev.ryanhcode.sable-companion:sable-companion-common-1.21.1:1.6.0")
 }
 
 configurations {

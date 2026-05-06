@@ -1,6 +1,8 @@
 package com.jaquadro.minecraft.storagedrawers.util;
 
+import dev.ryanhcode.sable.companion.SableCompanion;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Position;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
@@ -19,7 +21,10 @@ public final class WorldUtils
     public static BlockHitResult rayTraceEyes(@NotNull Level level, @NotNull Player player, @NotNull BlockPos blockPos) {
         Vec3 eyePos = player.getEyePosition(1);
         Vec3 lookVector = player.getViewVector(1);
-        Vec3 endPos = eyePos.add(lookVector.scale(eyePos.distanceTo(Vec3.atCenterOf(blockPos)) + 1));
+        Vec3 endPos = eyePos.add(
+                lookVector.scale(Math.sqrt(
+                        SableCompanion.INSTANCE.distanceSquaredWithSubLevels(level, eyePos, blockPos.getCenter())
+                ) + 1));
         ClipContext context = new ClipContext(eyePos, endPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
         return level.clip(context);
     }
